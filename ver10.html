@@ -1,0 +1,3874 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Atomic Overload</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body 
+		{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(1024, 576, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
+
+function preload() 
+{
+	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	game.scale.refresh();
+	// Load main screen
+	game.load.spritesheet('menu', 'assets/MenuBackgroundImage_v2-01.png', 1024, 576, 20);
+	game.load.image('menutitle', 'assets/Title.png');
+	game.load.image('levelSelect', 'assets/LevelSelectTitle.png');
+	game.load.spritesheet('tutorial', 'assets/TutorialButton.png', 200, 52);
+	game.load.image('thankyou1', 'assets/ThankYou.png');
+	// Load buttons
+	game.load.spritesheet('start', 'assets/StartButton02.png', 525, 101);
+	game.load.spritesheet('about', 'assets/AboutButton02.png', 525, 101);
+	game.load.spritesheet('unlockables', 'assets/UnlockablesButton.png', 525, 101);
+	
+	// Load about screen
+	game.load.image('abouttext', 'assets/AboutMenuText.png');
+	game.load.spritesheet('backbutton', 'assets/AboutBackButton.png', 441, 78);
+
+	// Load Score screen
+	game.load.image('scorescreen0', 'assets/Score_Screen_0Star.png');
+	game.load.image('scorescreen1', 'assets/Score_Screen_1Star.png');
+	game.load.image('scorescreen2', 'assets/Score_Screen_2Stars.png');
+	game.load.image('scorescreen3', 'assets/Score_Screen_3Stars.png');
+	game.load.image('newlevelunlocked', 'assets/LevelUnlocked.png');
+	game.load.image('newmapunlocked', 'assets/NewMapUnlocked.png');
+	
+	//Replay button
+	game.load.spritesheet('replaybutton' , 'assets/ReplayButton.png',441, 78);
+	
+	//Continue button
+	game.load.spritesheet('continuebutton' , 'assets/ContinueButton.png',441, 78);
+	
+	//Load locked image
+	game.load.image('locked1', 'assets/LockScreen_01.png');
+	game.load.image('locked2', 'assets/LockScreen_02.png');
+	
+	//Load unlockables
+	game.load.image('unlockablesTitle', 'assets/UnlockablesTitle.png');
+	game.load.image('unlock1', 'assets/TriviaMenu_Left_Commons2.png');
+	game.load.image('unlock2', 'assets/TriviaMenu_Left_Heritage2.png');
+	game.load.image('unlock3', 'assets/TriviaMenu_Left_JarvisSW2.png');
+	game.load.image('unlock4', 'assets/TriviaMenu_Left_MabelTainter2.png');
+	game.load.image('unlock5', 'assets/TriviaMenu_Right_Admin2.png');
+	game.load.image('unlock6', 'assets/TriviaMenu_Right_Bowman2.png');
+	game.load.image('unlock7', 'assets/TriviaMenu_Right_Harvey2.png');
+	game.load.image('unlock8', 'assets/TriviaMenu_Right_MSC2.png');
+	
+	game.load.image('fade', 'assets/fade.png');
+
+	//tutorial images
+	game.load.image('tut1', 'assets/Tutorial_Text_1.png');
+	game.load.image('tut2', 'assets/Tutorial_Text_2.png');
+	game.load.image('tut3', 'assets/Tutorial_Text_3.png');
+	game.load.image('tut4', 'assets/Tutorial_Text_4.png');
+	game.load.image('tut5', 'assets/Tutorial_Text_5.png');
+	game.load.image('tut6', 'assets/Tutorial_Text_6.png');
+	game.load.image('tut7', 'assets/Tutorial_Text_7.png');
+	game.load.image('tut8', 'assets/Tutorial_Text_8.png');
+	game.load.image('tut9', 'assets/Tutorial_Text_9.png');
+	game.load.image('tut10', 'assets/Tutorial_Text_10.png');
+	game.load.image('tut11', 'assets/Tutorial_Text_11.png');
+	game.load.image('tut12', 'assets/Tutorial_Text_12.png');
+	game.load.image('tut13', 'assets/Tutorial_Text_13.png');
+	game.load.image('mark', 'assets/tutorial_mark.png');
+
+	//Load Level select
+	//easy
+	game.load.spritesheet('level_1easy', 'assets/EasyLvl1SelectButton.png',60,60);
+	game.load.spritesheet('level_2easy', 'assets/EasyLvl2SelectButton.png',60,60);
+	game.load.spritesheet('level_3easy', 'assets/EasyLvl3SelectButton.png',60,60);
+
+	game.load.spritesheet('level_4med', 'assets/MedLvl4SelectButton.png',60,60);
+	game.load.spritesheet('level_5med', 'assets/MedLvl5SelectButton.png',60,60);
+	game.load.spritesheet('level_6med', 'assets/MedLvl6SelectButton.png',60,60);
+
+	game.load.spritesheet('level_7hard', 'assets/HardLvl7SelectButton.png',60,60);
+	game.load.spritesheet('level_8hard', 'assets/HardLvl8SelectButton.png',60,60);
+	
+	//	Load in level background image
+	game.load.image('level1_back', 'assets/Starfield1.png');
+	
+	game.load.image('level2_back', 'assets/Starfield2.png');
+	game.load.image('level2_front', 'assets/Starfield_white_front.png');
+	
+	game.load.image('level3_back', 'assets/Blue-White_Galaxy1.png');
+	
+	game.load.image('level4_back', 'assets/Blue-White_Galaxy2.png');
+	game.load.image('level4_front', 'assets/Starfield_purple_front.png');
+	
+	game.load.image('level5_back', 'assets/Violet-Red_Galaxy1.png');
+	
+	game.load.image('level6_back', 'assets/Violet-Red_Galaxy2.png');
+	game.load.image('level6_front1', 'assets/Moon_front.png');
+	game.load.image('level6_front2', 'assets/sun.png');
+	
+	game.load.image('level7_back', 'assets/Yellow-Red_Galaxy1.png');
+	game.load.image('level7_front', 'assets/Radiation_field.png');
+	
+	game.load.image('level8_back', 'assets/Yellow-Red_Galaxy2.png');
+	game.load.image('level8_front', 'assets/Astroid_belt.png');
+	
+	game.load.spritesheet('ship', 'assets/Player_sprites.png', 80, 60);
+	
+	game.load.image('platform', 'assets/Platform.png');
+	game.load.image('collectorGlow', 'assets/BackgroundGlowRed.png');
+	game.load.image('collectorRange', 'assets/collector_range.png');
+	game.load.spritesheet('shield', 'assets/shield_spritesheet.png', 56.9, 51);
+	game.load.spritesheet('shipCollect', 'assets/paticlePickupSpriteSheet.png', 42.66, 43);
+	game.load.spritesheet('shipExplosion',  'assets/Explosive_sprite-01_scaled.png', 100, 100);
+	
+	game.load.image('mothershipTop', 'assets/Base_upsd.png');
+	game.load.image('mothershipBottom', 'assets/Base_dwnsd_2.png');
+	game.load.image('mothershipDropoff', 'assets/Mship_dropoff_hitbox.png');
+	game.load.image('mothershipCollision', 'assets/Mship_proximity_hitbox.png');
+	game.load.image('mothershipProximity', 'assets/Mship_proximity_hitbox.png');
+	
+	game.load.spritesheet('collector', 'assets/CollectorSpriteSheet.png', 36, 36, 12, 2, 3.8);
+	
+	game.load.spritesheet('collectorExplosion', 'assets/CollectorExplosionSpriteSheet_scaled.png', 85.66, 79);
+	game.load.spritesheet('collection', 'assets/collection_spritesheet.png', 110, 110);
+	
+	game.load.spritesheet('particle1', 'assets/Particle1SpriteSheet.png', 17, 17);
+	game.load.spritesheet('particle2', 'assets/Particle2SpriteSheet.png', 17, 17);
+	game.load.spritesheet('particle3', 'assets/Particle3SpriteSheet.png', 17, 17);
+	game.load.spritesheet('particle4', 'assets/Particle5_SpriteSheet.png', 17, 17);
+	game.load.image('asteroid', 'assets/Asteroid_V2.png');
+	game.load.image('satellite', 'assets/Satelite.png');
+	game.load.image('bigUFO', 'assets/BigUfo.png');
+	game.load.spritesheet('astronaut', 'assets/SpaceGuySprite2.png', 32, 44, 4);
+	
+	game.load.image('healthbar', 'assets/HealthbarInside_01.png');
+	game.load.image('healthbar_outline', 'assets/HealthbarOutside_01.png');
+	game.load.image('score', 'assets/ScoreText.png');
+	game.load.image('time', 'assets/TimeText.png');
+	game.load.image('level', 'assets/LevelText.png');
+	//audio
+	game.load.audio('alarm', 'assets/audio/ContainmentPodAlarm01.mp3');
+	game.load.audio('podExplosion', 'assets/audio/ContainmentPodExplosion.mp3');
+	game.load.audio('menuMusic', 'assets/audio/InGameMusic01.mp3');
+	game.load.audio('podDrain', 'assets/audio/PodDraining.wav');
+	game.load.audio('shieldSound', 'assets/audio/ShieldSound.wav');
+	game.load.audio('boom', 'assets/audio/ShipExplosion.mp3');
+	game.load.audio('beep', 'assets/audio/Menu_bleep.ogg');
+	game.load.audio('thruster', 'assets/audio/Player_thrusters.ogg');
+	//edit
+	game.load.audio('menu', 'assets/audio/AtomicMenu.mp3');
+	game.load.audio('boom2', 'assets/audio/Ship_explode.mp3');
+	game.load.audio('menuMusic2', 'assets/audio/InGameMusic01_edited.mp3');
+	game.load.audio('partHit', 'assets/audio/GettingHitByParticles.wav');
+	
+}
+//menu vars
+var main;
+var start;
+var about;
+
+
+//level vars
+var level1easy,level2easy,level3easy,level4easy,level5easy,level6easy,level7easy,level8easy;
+var level1med,level2med,level3med,level4med,level5med,level6med,level7med,level8med;
+var level1hard,level2hard,level3hard,level4hard,level5hard,level6hard,level7hard,level8hard;
+
+//about vars
+var aboutbackground;
+var backbutton;
+// system vars
+var gameTime = 0;
+var timecheck;
+var delaycheck;
+var delay = 1;
+var unlocked = 1; //Default 1
+var unlockedCounter = 8; //Default 0
+var continueCounter = false;
+var replayCounter = false;
+var backCounter = false;
+
+var level1button = false;
+var level2button = false;
+var level3button = false;
+var level4button = false;
+var level5button = false;
+var level6button = false;
+var level7button = false;
+var level8button = false;
+
+var particleCount;
+var thrustCheck = 0;
+var explosionCheck = 0;
+var gamemode; //1 = main, 2 = gameload, 3 = game check, 4 = thank you page, 5 = about, 6 = level select, 7 = unlockables page, 0 = nothing
+
+var newlevel1 = true;
+var newlevel2 = true;
+var newlevel3 = true;
+var newlevel4 = true;
+var newlevel5 = true;
+var newlevel6 = true;
+var newlevel7 = true;
+var newlevel8 = true;
+
+var newmap1 = true;
+var newmap2 = true;
+var newmap3 = true;
+var newmap4 = true;
+var newmap5 = true;
+var newmap6 = true;
+var newmap7 = true;
+var newmap8 = true;
+
+var mapUnlock1 = false;
+var mapUnlock2 = false;
+var mapUnlock3 = false;
+var mapUnlock4 = false;
+var mapUnlock5 = false;
+var mapUnlock6 = false;
+var mapUnlock7 = false;
+var mapUnlock8 = false;
+var mapCounter;
+// level vars
+var levelselect = 1;
+var levelCountdown = 30;
+
+// score vars
+var score = 0;
+var scoreDisplay;
+
+var collector1DropoffSwitch = 0;
+var collector2DropoffSwitch = 0;
+var collector3DropoffSwitch = 0;
+
+var cursors;
+var carrying = 0;
+
+//spawn particle vars
+var waveCount;
+var isSpawning =0;
+
+// background
+var starfield;
+var starfield2;
+var starfield3;
+var tilePosition={x:0,y:0};
+
+//	player vars
+var player;
+var playerDeath = 0;
+
+//	Health vars
+var health;
+var currentHealth = 50;
+var maxHealth = 50;
+var width = 100;
+var healthbar;
+
+//powerup vars
+var shielded = 0;
+var shieldStrength;
+var shieldSpawnTime = 200;
+var shipCollectSpawnTime = 300;
+var shipCollecting = 0;
+
+
+//level variation vars
+var particlesInWave = 10;
+var waveDelay = 3000;
+var waveVariation = 0;
+
+//collector1 vars
+var collector1;
+var carryingCollector1 = 0;
+var collector1Capacity = 10;
+var collector1Count = 0;
+var collector1Full = 0;
+var collector1Platform = 0;
+
+//collector2 vars
+var collector2;
+var carryingCollector2 = 0;
+var collector2Capacity = 10;
+var collector2Count = 0;
+var collector2Full = 0;
+var collector2Platform = 0;
+
+//collector3 vars
+var collector3;
+var carryingCollector3 = 0;
+var collector3Capacity = 10;
+var collector3Count = 0;
+var collector3Full = 0;
+var collector3Platform;
+
+//collector destroyed variables
+var collector1Dead = 0;
+var collector2Dead = 0;
+var collector3Dead = 0;
+
+// mothership vars
+var mothershipExtended = 0;
+
+//timer variables
+var t1;
+var t2;
+var t3;
+
+// spacejunk vars
+var spacejunk;
+var spacejunk_right;
+
+//spacebar grab controls
+var actionKey;
+var actionLimiter;
+var tutorialTextSelect = 99;
+
+//music variables
+var music;
+var alarm;
+var podExplosion;
+var playerDrain;
+var podDrain1;
+var podDrain2;
+var podDrain3;
+var shieldSound;
+var boom;
+var musicLoop = 0;
+
+function create() 
+{
+	//load sounds 
+		podExplosion = game.add.audio('podExplosion');
+		music = game.add.audio('menuMusic');
+		podDrain1 = game.add.audio('podDrain');
+		podDrain2 = game.add.audio('podDrain');
+		podDrain3 = game.add.audio('podDrain');
+		playerDrain = game.add.audio('podDrain');
+		shieldSound = game.add.audio('shieldSound');
+		boom = game.add.audio('boom');
+		beep = game.add.audio('beep');
+		thruster = game.add.audio('thruster');
+		boom2 = game.add.audio('boom2');
+		music2 = game.add.audio('menuMusic2');
+		partHit = game.add.audio('partHit');
+		//edit
+		menu = game.add.audio('menu');
+		menu.volume = 0.2;
+		
+		
+		thruster.volume = 0.4;
+		podExplosion.volume = 0.2;
+	
+	// main mode
+		// create background image and animate
+		main = game.add.sprite(0, 0, 'menu');
+		main.animations.add('scroll');
+		
+    	main.animations.play('scroll', 30, true);
+		
+		maintitle = game.add.sprite(210, 50, 'menutitle');
+		//Music loops
+		if(musicLoop == 0)
+		{
+			musicLoop = 1;
+			
+			//edit
+			menu.loop = true;
+			music.loop = true;
+			music2.loop = true;
+			menu.play();
+		}
+		
+		// hover, no click, click  : 0 1 2
+		// start button
+		start = game.add.button(game.world.centerX - 280,game.world.centerY - 40,'start', startOnClick, this, 1,0,2);
+		// about button
+		about = game.add.button(game.world.centerX - 280,game.world.centerY + 40,'about', aboutOnClick, this, 1,0,2);
+		// unlockable button
+		unlockables = game.add.button(game.world.centerX - 280,game.world.centerY + 120,'unlockables', unlockOnClick, this, 1,0,2);
+		gamemode = 0;
+	
+}
+
+function update()
+{
+	// create main page
+	if(gamemode == 1)
+	{
+		create();
+	}
+	if(gamemode == 2)
+	{
+		// basic game setup
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		
+		//	Create background
+		if(levelselect == 1 || levelselect == 10){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level1_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level2_front');
+			starfield2.alpha = .5;
+		}
+		else if(levelselect == 2){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level2_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level2_front');
+			starfield2.alpha = .5;
+		}
+		else if(levelselect == 3){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level3_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level4_front');
+			starfield2.alpha = .5;
+		}
+		else if(levelselect == 4){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level4_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level4_front');
+			starfield2.alpha = .5;
+		}
+		else if(levelselect == 5){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level5_back');
+			starfield2 = game.add.tileSprite(-50, 0, 1024, 1200, 'level6_front1');
+			starfield3 = game.add.tileSprite(0, -550, 1024, 1200, 'level6_front2');
+		}
+		else if(levelselect == 6){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level6_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level6_front1');
+			starfield3 = game.add.tileSprite(0, -570, 1024, 1200, 'level6_front2');
+		}
+		else if(levelselect == 7){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level7_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level7_front');
+			starfield2.alpha = 1;
+		}
+		else if(levelselect == 8){
+			starfield = game.add.tileSprite(0, 0, 1024, 1200, 'level8_back');
+			starfield2 = game.add.tileSprite(0, 0, 1024, 1200, 'level8_front');
+		}
+		
+		
+		//set up the walls
+		wallGroup = game.add.group();
+		
+		wallGroup.enableBody = true;
+		
+		topWall = wallGroup.create(-20, -47, 'mothershipCollision');
+		topWall.scale.setTo(8, 1);
+		bottomWall = wallGroup.create(-20, 579, 'mothershipCollision');
+		bottomWall.scale.setTo(8, 1);
+		leftWall = wallGroup.create(-43, -20, 'mothershipCollision');
+		leftWall.scale.setTo(.25, 16);
+		rightWall = wallGroup.create(1027, -20, 'mothershipCollision');
+		rightWall.scale.setTo(.25, 16);
+		
+		topWall.body.immovable = true;
+		bottomWall.body.immovable = true;
+		leftWall.body.immovable = true;
+		rightWall.body.immovable = true;
+		
+		//	Health bar
+		health = game.add.group();
+		healthbar = health.game.add.sprite(4,27,'healthbar');
+		healthbar.scale.setTo((currentHealth/maxHealth)*.21,.2);
+		healthbar_out = health.game.add.sprite(3,3,'healthbar_outline');
+		healthbar_out.scale.set(.21,.21);
+		
+		//add the spacebar and arrow keys
+		//actionKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		actionKey = game.input.mouse;
+		
+		//create the particles
+		particleGroup = game.add.group();
+		particleGroup.enableBody = true;
+		//create spacejunk group
+		spacejunkGroup = game.add.group();
+		spacejunkGroup.enableBody = false;
+
+		//mothership proximity sensor
+		mothershipProximityGroup = game.add.group();
+		mothershipProximityGroup.enableBody = true;
+		mothershipProximity = mothershipProximityGroup.create(340, 420, 'mothershipProximity');
+		mothershipProximity.scale.setTo(2.13, 5.69);
+		mothershipProximity.body.immovable = true;
+		
+		// create mothership dropoff
+		mothershipDropoffGroup = game.add.group();
+		mothershipDropoffGroup.enableBody = true;
+		
+		mothershipDropoff = mothershipDropoffGroup.create(497,480, 'mothershipDropoff');
+		mothershipDropoff.body.immovable = true;
+		
+		// mothership collision
+		mothershipCollisionGroup = game.add.group();
+		mothershipCollisionGroup.enableBody = true;
+		mothershipCollision = mothershipCollisionGroup.create(415,595, 'mothershipCollision');
+		mothershipCollision.scale.setTo(1.14, 1.42);
+		mothershipCollision.body.immovable = true;
+		
+		mothershipBottom = game.add.sprite(410, 550, 'mothershipBottom');
+		game.physics.arcade.enable(mothershipBottom);
+		mothershipBottom.immovable = true;
+		
+		// create the platforms
+		platform = game.add.sprite(840, 530, 'platform');
+		game.physics.arcade.enable(platform);
+		platform.body.immovable = true;
+		
+		tutorialMark = game.add.sprite(1200, 265,'mark');
+		game.physics.arcade.enable(tutorialMark);
+		
+		collectorGlow = game.add.sprite(1200, 0, 'collectorGlow');
+		game.physics.arcade.enable(collectorGlow);
+		
+		//create the collectors	
+		collector1RangeGroup = game.add.group();
+		collector2RangeGroup = game.add.group();
+		collector3RangeGroup = game.add.group();
+		
+		collectorGroup1 = game.add.group();
+		collectorGroup2 = game.add.group();
+		collectorGroup3 = game.add.group();
+		
+		collector1RangeGroup.enableBody = true;
+		collector2RangeGroup.enableBody = true;
+		collector3RangeGroup.enableBody = true;
+		
+		collectorGroup1.enableBody = true;
+		collectorGroup2.enableBody = true;
+		collectorGroup3.enableBody = true;
+		
+		// Collector explosion group
+		collectorExplosionGroup = game.add.group();
+		collectorExplosionGroup.enableBody = true;
+		collectorExplosion1 = collectorExplosionGroup.create(1200, 0, 'collectorExplosion');
+		collectorExplosion1.animations.add('explode', [0,1,2,3,4,5], 12, false);
+		collectorExplosion2 = collectorExplosionGroup.create(1200, 0, 'collectorExplosion');
+		collectorExplosion2.animations.add('explode', [0,1,2,3,4,5], 12, false);
+		collectorExplosion3 = collectorExplosionGroup.create(1200, 0, 'collectorExplosion');
+		collectorExplosion3.animations.add('explode', [0,1,2,3,4,5], 12, false);
+		
+		// collector ranges
+		collector1Range = collector1RangeGroup.create(825, 500, 'collection');
+		collector1Range.animations.add('collect', [12,15,18,21,24,27,30,33,35], 15, true);
+		collector1Range.animations.add('stop', [35], 1, false);
+		collector1Range.animations.play('stop');
+		
+		collector1 = collectorGroup1.create(collector1Range.body.position.x + 36, collector1Range.body.position.y + 36, 'collector');
+		collector1.animations.add('drain', [11,10,9,8,7,6,5,4,3,2,1,0], 8, false);
+		collector1.animations.add('full', [10, 11], 2, true);
+		
+		collector2Range = collector2RangeGroup.create(882, 500, 'collection');
+		collector2Range.animations.add('collect', [12,15,18,21,24,27,30,33,35], 15, true);
+		collector2Range.animations.add('stop', [35], 1, false);
+		collector2Range.animations.play('stop');
+		
+		collector2 = collectorGroup2.create(collector2Range.body.position.x + 36, collector2Range.body.position.y + 36, 'collector');
+		collector2.animations.add('drain', [11,10,9,8,7,6,5,4,3,2,1,0], 8, false);
+		collector2.animations.add('full', [10, 11], 2, true);
+		
+		collector3Range = collector3RangeGroup.create(937, 500, 'collection');
+		collector3Range.animations.add('collect', [12,15,18,21,24,27,30,33,35], 15, true);
+		collector3Range.animations.add('stop', [35], 1, false);
+		collector3Range.animations.play('stop');
+		
+		collector3 = collectorGroup3.create(collector3Range.body.position.x + 36, collector3Range.body.position.y + 36, 'collector');
+		collector3.animations.add('drain', [11,10,9,8,7,6,5,4,3,2,1,0], 8, false);
+		collector3.animations.add('full', [10, 11], 2, true);
+		
+		// create mothership
+		mothershipTop = game.add.sprite(410, 590, 'mothershipTop');
+		game.physics.arcade.enable(mothershipTop);
+		mothershipTop.body.immovable = true;
+		
+		// Player collector animation
+		playerCollector = game.add.sprite(1200,200, 'collection');
+		game.physics.arcade.enable(playerCollector);
+		playerCollector.animations.add('collect', [12,15,18,21,24,27,30,33,35], 15, true);
+		playerCollector.animations.play('collect');
+		
+		//Set player death to 0
+		playerDeath = 0;
+		
+		//Enable the Arcade Physics system and create player
+		player = game.add.sprite(450, game.world.height - 100, 'ship');
+		
+		player.scale.setTo(.569,.569);
+		player.anchor.set(0.5);
+		game.physics.arcade.enable(player);
+		player.body.drag.set(100);
+		player.body.maxVelocity.set(150);
+		player.body.collideWorldBounds = true;
+		player.animations.add('thrust', [0,1,2,1], 8, true);
+		
+		//player shield
+		shield = game.add.sprite(1200, 0, 'shield');
+		shield.anchor.set(0.5, 0.56);
+		game.physics.arcade.enable(shield);
+		shield.animations.add('blue', [0,1,2], 9, true);
+		shield.animations.add('yellow', [3,4,5], 9, true);
+		shield.animations.add('red', [6,7,8], 9, true);
+
+		shieldPickup = game.add.sprite(1200, 200, 'shield');
+		shieldPickup.scale.setTo(.7,.7);
+		shieldPickup.anchor.set(.5);
+		game.physics.arcade.enable(shieldPickup);
+		shieldPickup.body.bounce.setTo(1,1);
+		shieldPickup.animations.add('sparkle', [0,1,2], 9, true);
+		shieldPickup.animations.play('sparkle');
+		
+		// ship collect
+		shipCollectPickup = game.add.sprite(1200, 200, 'shipCollect');
+		shipCollectPickup.anchor.set(.5);
+		game.physics.arcade.enable(shipCollectPickup);
+		shipCollectPickup.body.bounce.setTo(1,1);
+		shipCollectPickup.animations.add('glow', [0,1,2,1], 4, true);
+		shipCollectPickup.animations.play('glow');
+		
+		//ship explosion
+		shipExplosion = game.add.sprite(1200, 200, 'shipExplosion');
+		game.physics.arcade.enable(shipExplosion);
+		shipExplosion.animations.add('explode', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], 40, false);
+		
+		// Display current level time limit
+		timeDisplay = game.add.sprite(850, 10, 'time');
+		timeDisplay = game.add.text(960, 9, levelCountdown, { fontSize: '18px', fill: 'SeaGreen' });
+		timeDisplay.fontSize = '36px';
+		
+		levelDisplay = game.add.sprite(850, 40, 'level');
+		levelDisplay.scale.setTo(0.32,0.32);
+		levelDisplay = game.add.text(965, 43, levelselect, { fontSize: '18px', fill: 'SeaGreen' });
+		
+		if(levelselect == 10)
+		{
+			levelDisplay.destroy();
+		}
+		
+		// score
+		scoreDisplay = game.add.sprite(10, 65, 'score');
+		scoreDisplay = game.add.text(110, 58, ': 0', { fontSize: '18px', fill: 'SeaGreen' });
+		scoreDisplay.fontSize = '36px';
+		
+		// game time counter
+		gameTime = 0;
+
+	}
+	//Gameload
+	//level 1 easy
+	
+	//new level designs
+	if(gamemode == 2 && levelselect == 1)
+	{
+		gamemode = 3;
+		reset();
+		//edit
+		menu.stop();
+		music2.play();
+		
+		delaycheck = game.time.now;
+		
+		
+		levelCountdown = 90;
+		collector1.body.position.x = 1200;
+		collector2.body.position.x = 912;
+		collector2.body.position.y = 536;
+		collector3.body.position.x = 1200;
+		shieldSpawnTime = 100000;
+		shipCollectSpawnTime = 100000;
+				
+		//Particle setup
+		
+		waveCount = 6;
+		particleCount = 30;
+		particlesInWave = 5;
+		waveDelay = 2000;
+	}
+	
+	//level 2 easy 
+	else if(gamemode == 2 && levelselect == 2)
+	{
+		gamemode = 3;
+		reset();
+		//edit
+		menu.stop();
+		music2.play();
+		delaycheck = game.time.now;
+		
+		
+		levelCountdown = 70;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 1200;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 100000;
+		shipCollectSpawnTime = 2500;
+		
+		//Particle setup
+		
+		waveCount = 16;
+		waveDelay = 3000;
+		waveVariation = 1;
+		particlesInWave = 5;
+		particleCount = 80;
+		
+		//create spacejunk (random image)
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(200, 250, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(200, 250, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(200, 250, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(200, 250, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 100;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+	}
+	
+	//level 3 easy 
+	else if (gamemode == 2 && levelselect == 3)
+	{
+		gamemode = 3;
+
+		reset();
+		//edit
+		menu.stop();
+		music2.play();
+		
+		waveCount = 30;
+		particleCount = 60;
+		particlesInWave = 2;
+		waveDelay = 3000;
+		waveVariation = 1;
+		
+		
+		levelCountdown = 100;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 1200;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 2000;
+		shipCollectSpawnTime = 100000;
+		
+		delaycheck = game.time.now;
+	}
+	
+	//level 4 easy 
+	else if (gamemode == 2 && levelselect == 4)
+	{
+		gamemode = 3;
+
+		reset();
+		//edit
+		menu.stop();
+		music2.play();
+		waveCount = 16;
+		particleCount = 48;
+		particlesInWave = 3;
+		waveVariation = 1;
+		waveDelay = 5000;
+		
+		
+		levelCountdown = 80;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 1200;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 100000;
+		shipCollectSpawnTime = 3000;
+		
+		delaycheck = game.time.now;
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(200, 200, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(200, 200, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(200, 200, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(200, 200, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 100;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(824, 400, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(824, 400, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(824, 400, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(824, 400, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = -100;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+	}
+
+	
+	//level 5 easy 
+	else if (gamemode == 2 && levelselect == 5)
+	{
+		gamemode = 3;
+
+		reset();
+		//edit
+		menu.stop();
+		music.play();
+		waveCount = 80;
+		particleCount = 80;
+		particlesInWave = 1;
+		waveVariation = 1;
+		waveDelay = 1000;
+		
+		
+		levelCountdown = 80;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 1200;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 3000;
+		shipCollectSpawnTime = 100000;
+		
+		delaycheck = game.time.now;
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(200, 200, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(200, 200, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(200, 200, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(200, 200, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 100;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+	}
+	
+	//level 6 easy 
+	else if (gamemode == 2 && levelselect == 6)
+	{
+		gamemode = 3;
+
+		reset();
+		//edit
+		menu.stop();
+		music.play();
+		waveCount = 60;
+		particleCount = 60;
+		particlesInWave = 1;
+		waveVariation = 1;
+		waveDelay = 1500;		
+		
+		levelCountdown = 90;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 912;
+		collector2.body.position.y = 536;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 1200;
+		shipCollectSpawnTime = 2500;
+		
+		delaycheck = game.time.now;
+	}
+	
+	//level 7 easy 
+	else if (gamemode == 2 && levelselect == 7)
+	{
+		gamemode = 3;
+
+		reset();
+		//edit
+		menu.stop();
+		music.play();
+		waveCount = 32;
+		particleCount = 160;
+		particlesInWave = 5;
+		waveVariation = 1;
+		waveDelay = 3000;
+		
+		
+		levelCountdown = 90;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 912;
+		collector2.body.position.y = 536;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 1500;
+		shipCollectSpawnTime = 3000;
+		
+		delaycheck = game.time.now;
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(200, 150, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(200, 150, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(200, 150, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(200, 150, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 150;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(500, 250, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(500, 250, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(500, 250, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(500, 250, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 50;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(800, 350, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(800, 350, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(800, 350, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(800, 350, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = -100;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+	}
+	
+	//level 8 easy
+	else if (gamemode == 2 && levelselect == 8)
+	{
+		gamemode = 3;
+		
+		reset();
+		//edit
+		menu.stop();
+		music.play();
+		waveCount = 40;
+		particleCount = 80;
+		particlesInWave = 2;
+		waveVariation = 1;
+		waveDelay = 5000;
+		
+		
+		levelCountdown = 90;
+		collector1.body.position.x = 855;
+		collector1.body.position.y = 536;
+		collector2.body.position.x = 912;
+		collector2.body.position.y = 536;
+		collector3.body.position.x = 967;
+		collector3.body.position.y = 536;
+		shieldSpawnTime = 3000;
+		shipCollectSpawnTime = 2000;
+		
+		delaycheck = game.time.now;
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(200, 100, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(200, 100, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(200, 100, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(200, 100, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 50;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(600, 175, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(600, 175, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(600, 175, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(600, 175, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = -150;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(900, 300, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(900, 300, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(900, 300, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(900, 300, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = 100;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+		
+		var spacejunkSelect = Math.ceil(Math.random() * 4);
+		
+		if (spacejunkSelect == 1){
+			var spacejunk = spacejunkGroup.create(700, 400, 'satellite');
+		}
+		else if (spacejunkSelect == 2){
+			var spacejunk = spacejunkGroup.create(700, 400, 'asteroid');
+		}
+		else if (spacejunkSelect == 3){
+			var spacejunk = spacejunkGroup.create(700, 400, 'bigUFO');
+		}
+		else if (spacejunkSelect == 4){
+			var spacejunk = spacejunkGroup.create(700, 400, 'astronaut');
+			spacejunk.animations.add('flying');
+			spacejunk.animations.play('flying', 5, true);
+		}
+			
+		
+		game.physics.arcade.enable(spacejunk);
+		//spacejunk movements (optionals commented out)
+		//spacejunk.body.drag.set(100);
+		spacejunk.body.velocity.x = -70;
+		spacejunk.body.velocity.y = 0;		
+		spacejunk.body.immovable = true;
+		
+		//spacejunk.body.collideWorldBounds = true;
+		spacejunk.checkWorldBounds = true;
+		spacejunk.events.onOutOfBounds.add(resetJunk,this);
+	}
+	
+	// level 9 Reached the end
+	else if (gamemode == 2 && levelselect == 9)
+	{
+		reset();
+		gamemode = 4;
+	}
+	
+	//tutorial
+	if(gamemode == 2 && levelselect == 10)
+	{
+		gamemode = 3;
+		reset();
+		//edit
+		menu.stop();
+		music2.play();
+		
+		delaycheck = game.time.now;
+		levelCountdown = 1000;
+		tutorialTextSelect = 0;
+		collector1.body.position.x = 1200;
+		collector2.body.position.x = 912;
+		collector2.body.position.y = 536;
+		collector3.body.position.x = 1200;
+		shieldSpawnTime = 100000;
+		shipCollectSpawnTime = 100000;
+				
+		//Particle setup
+		
+		waveCount = 0;
+		
+		tutorialMark.body.position.x = 490;
+		tutorial1 = game.add.button(0,0,'tut1', tutorialText, this);
+	}
+
+	// Game check
+	if(gamemode == 3)
+	{
+		// Count the time
+		gameTime = gameTime + 1;
+		if(gameTime % 60 == 0)
+		{
+			levelCountdown -= 1;
+			if (levelCountdown == 0 && playerDeath == 0){
+				showScore();
+			}
+		}
+		if(waveCount == 0 && particleCount == 0 && (collector1Count == 0 || collector1Dead == 2) && (collector2Count == 0 || collector2Dead == 2) && (collector3Count == 0 ||collector3Dead == 2))
+		{
+			showScore();
+		}
+		
+		// Scroll the background image
+		if(levelselect == 1 || levelselect == 2){
+			starfield.tilePosition.y += 0.10;
+			starfield2.tilePosition.y += 0.18;
+		}
+		if(levelselect == 3 || levelselect == 4){
+			starfield.tilePosition.y += 0.10;
+			starfield2.tilePosition.y += 0.18;
+		}
+		
+		if(levelselect == 5 || levelselect == 6){
+			starfield2.alpha = 1;
+			starfield.tilePosition.y += 0.10;
+			//moon
+			starfield2.tilePosition.y += 0.1;
+			//sun
+			starfield3.tilePosition.y += 0.05;
+		}
+		if(levelselect == 7){
+			starfield.tilePosition.y += 0.10;
+			starfield2.tilePosition.y += 1;
+		}
+		if(levelselect == 8){
+			starfield.tilePosition.y += 0.10;
+			starfield2.tilePosition.y += 0.75;
+		}
+		if(levelselect == 10)
+		{
+			starfield.tilePosition.y += 0.10;
+			starfield2.tilePosition.y += 0.18;
+		}
+		//Updates score
+		scoreDisplay.text = ': ' + score;
+		//Updates time
+		timeDisplay.text = levelCountdown;
+		
+		//Switch the collector frames
+		if (collector1DropoffSwitch == 0 && collector1Full == 0){
+			collector1.frame = Math.floor((collector1Count / collector1Capacity) * 11);
+		}
+		
+		if (collector2DropoffSwitch == 0 && collector2Full == 0){
+			collector2.frame = Math.floor((collector2Count / collector2Capacity) * 11);
+		}
+		
+		if (collector3DropoffSwitch == 0 && collector3Full == 0){
+			collector3.frame = Math.floor((collector3Count / collector3Capacity) * 11);
+		}
+		
+		checkPods();
+		//Delay time to set isSpawning
+		if(game.time.now - delaycheck > 10000 && delay == 1)
+		{
+			isSpawning = 1;
+			delay = 0;
+		}
+
+		//spawns particles
+		if(isSpawning == 1 && waveCount > 0) {
+			spawn();
+		}
+		
+		//sets up next spawn wave event
+		
+		if( waveCount > 0 && game.time.now - timecheck > waveDelay && delay == 0){
+			isSpawning = 1;
+		}
+		
+		//Mothership drop off
+		mothershipExtended = 0;
+		if (mothershipTop.body.position.y < 590 && collector1DropoffSwitch == 0 && collector2DropoffSwitch == 0 && collector3DropoffSwitch == 0)
+		{
+			mothershipTop.body.velocity.y = 200;
+			mothershipBottom.body.velocity.y = 200;
+			mothershipCollision.body.velocity.y = 200;
+		}
+		else
+ 		{
+			mothershipTop.body.velocity.y = 0;
+			mothershipBottom.body.velocity.y = 0;
+			mothershipCollision.body.velocity.y = 0;	
+		}
+
+		// Shield Spawn
+		if (gameTime == shieldSpawnTime){
+			shieldPickup.body.position.x = 100;
+			shieldPickup.body.angularVelocity = 80;
+			shieldPickup.body.velocity.x = 30;
+			shieldPickup.body.velocity.y = -80;
+		}
+		
+		//Ship Collect Spawn
+		if (gameTime == shipCollectSpawnTime){
+			shipCollectPickup.body.position.x = 400;
+			shipCollectPickup.body.angularVelocity = 80;
+			shipCollectPickup.body.velocity.x = 30;
+			shipCollectPickup.body.velocity.y = -80;
+		}
+		
+		// Adjust shield position to player
+		if (shielded == 1){
+			shield.body.position.x = player.body.position.x - 5;
+			shield.body.position.y = player.body.position.y - 12;	
+			shield.angle = player.angle + 90;
+			if (shieldStrength == 3){
+				shield.animations.play('blue');
+			}
+			else if (shieldStrength == 2){
+				shield.animations.play('yellow');
+			}
+			else if (shieldStrength == 1){
+				shield.animations.play('red');
+			}
+			else if (shieldStrength <= 0){
+				shielded = 0;
+				shield.body.position.x = 1200;
+			}
+		}
+/*
+		//Arrow key flight controls
+		if (cursors.up.isDown)
+		{
+			player.animations.play('thrust');
+			if (carrying == 1)
+			{
+				game.physics.arcade.accelerationFromRotation(player.rotation - 1.5, 200, player.body.acceleration);
+			}
+			else
+			{
+				game.physics.arcade.accelerationFromRotation(player.rotation - 1.5, 300, player.body.acceleration);
+			}
+		}
+		else if (cursors.down.isDown)
+		{
+			player.body.drag.set(500);
+			player.animations.stop('thrust');
+			player.frame = 26;
+		}
+		else
+		{
+			player.body.acceleration.set(0);
+			player.body.drag.set(100);
+			player.animations.stop('thrust');
+			player.frame = 26;
+		}
+
+		if (cursors.left.isDown)
+		{
+			player.body.angularVelocity = -300;
+		}
+		else if (cursors.right.isDown)
+		{
+			player.body.angularVelocity = 300;
+		}
+		else
+		{
+			player.body.angularVelocity = 0;
+		}
+*/
+		//touchscreen controls
+		//check if touch input is true 
+		if (game.physics.arcade.distanceToPointer(player, game.input.activePointer) > 8)
+		{
+			//Make the object seek to the active pointer (mouse or touch).
+			if (carrying == 1)
+			{
+				//game.physics.arcade.moveToPointer(player, 200);
+				player.rotation = game.physics.arcade.moveToPointer(player, 200, game.input.activePointer);
+				player.animations.play('thrust');
+				if(thrustCheck == 0)
+				{
+					thrustCheck = 1;
+					thruster.loop = true;
+					thruster.play();
+				}
+			}
+			else
+			{
+				//game.physics.arcade.moveToPointer(player, 300);
+				player.rotation = game.physics.arcade.moveToPointer(player, 300, game.input.activePointer);
+				player.animations.play('thrust');
+				if(thrustCheck == 0)
+				{
+					thrustCheck = 1;
+					thruster.loop = true;
+					thruster.play();
+				}
+			}
+		}
+		else
+		{
+			//  Otherwise turn off velocity because we're close enough to the pointer
+			player.body.velocity.set(0);
+			player.frame = 3;
+			thruster.stop();
+			thrustCheck = 0;
+		}
+		
+		
+		if (levelselect == 10 && tutorialTextSelect == 9 && collector2Full == 0){
+			collector2.body.position.x = 480;
+			collector2.body.position.y = 260;
+			collector2Range.animations.play('collect');
+		}
+		
+		// collector range
+		collector1Range.body.position.x = collector1.body.position.x - 36;
+		collector1Range.body.position.y = collector1.body.position.y - 36;
+		
+		collector2Range.body.position.x = collector2.body.position.x - 36;
+		collector2Range.body.position.y = collector2.body.position.y - 36;
+		
+		collector3Range.body.position.x = collector3.body.position.x - 36;
+		collector3Range.body.position.y = collector3.body.position.y - 36;
+		
+		// collector glow if player is carrying
+		if (carrying == 1)
+		{
+			collectorGlow.body.position.x = player.body.position.x - 3;
+			collectorGlow.body.position.y = player.body.position.y - 7;
+		}
+		else
+		{
+			collectorGlow.body.position.x = 1200;
+		}
+		
+		// Reposition player position if ship collecting
+		if (shipCollecting == 1){
+			playerCollector.body.position.x = player.body.position.x - 33;	
+			playerCollector.body.position.y = player.body.position.y - 38;
+		}
+		else
+		{
+			playerCollector.body.position.x = 1200;	
+			playerCollector.body.position.y = 200;
+		}
+		
+		// set the collector explosion animation
+		if (collector1Dead == 1){
+			collectorExplosion1.body.position.x = collector1.body.position.x - 25;
+			collectorExplosion1.body.position.y = collector1.body.position.y - 22;
+			collectorExplosion1.animations.play('explode');
+			setTimeout("destroyExplosion1()", 450);
+			collector1Dead = 2;
+		}
+		if (collector2Dead == 1){
+			collectorExplosion2.body.position.x = collector2.body.position.x - 25;
+			collectorExplosion2.body.position.y = collector2.body.position.y - 22;
+			collectorExplosion2.animations.play('explode');
+			setTimeout("destroyExplosion2()", 450);
+			collector2Dead = 2;
+		}
+		if (collector3Dead == 1){
+			collectorExplosion3.body.position.x = collector3.body.position.x - 25;
+			collectorExplosion3.body.position.y = collector3.body.position.y - 22;
+			collectorExplosion3.animations.play('explode');
+			setTimeout("destroyExplosion3()", 450);
+			collector3Dead = 2;
+		}
+		
+		// player death explosion animation
+		if(playerDeath == 1){
+			shipExplosion.body.position.x = player.body.position.x - 28;
+			shipExplosion.body.position.y = player.body.position.y - 34;
+			shipExplosion.animations.play('explode');
+			if (explosionCheck == 0){
+				
+				//boom.play();
+				boom2.play();
+				explosionCheck = 1;
+			}
+			setTimeout("destroyShipExplosion()", 700);
+		}
+		
+		//set collector platform to 0
+		collector1Platform = 0;
+		collector2Platform = 0;
+		collector3Platform = 0;
+		
+		//Particle group decelerate
+		particleGroup.forEachAlive(function particleDecelerate(particle){
+			particle.body.acceleration.set(0);
+			if (particle.body.velocity.y > 150){
+				particle.body.velocity.y = 150;
+			}
+			if (particle.body.velocity.y < -150){
+				particle.body.velocity.y = -150;
+			}
+			if (particle.body.velocity.x > 150){
+				particle.body.velocity.x = 150;
+			}
+			if (particle.body.velocity.x < -150){
+				particle.body.velocity.x = -150;
+			}
+			
+		}, this);
+		
+		//particle collides with walls
+		game.physics.arcade.collide(particleGroup, wallGroup, bounceBounds, null, this);
+		
+		//particle & player collide
+		game.physics.arcade.collide(player, particleGroup, healthDamagedbyParticle, null, this);
+		//spacejunk & player collide
+		game.physics.arcade.collide(player, spacejunkGroup, healthDamagedbySpacejunk, null, this);
+		
+		//spacejunk & particle collide
+		game.physics.arcade.collide(particleGroup, spacejunkGroup, bounceBounds, null, this);
+		
+		//player & mothership collide
+		game.physics.arcade.collide(player, mothershipCollision, motherShipCollide, null, this);
+		
+		//shield pickup collisions
+		game.physics.arcade.collide(player, shieldPickup, powerupShield, null, this);
+		game.physics.arcade.collide(shieldPickup, wallGroup);
+		
+		//ship collect pickup collisions
+		game.physics.arcade.collide(player, shipCollectPickup, shipCollection, null, this);
+		game.physics.arcade.collide(shipCollectPickup, wallGroup);
+		
+		// particle & platform collide
+		game.physics.arcade.collide(particleGroup, platform, bounceBounds, null, this);
+		
+		// collector group & platform collide
+		game.physics.arcade.overlap(collectorGroup1, platform, platformCollector1, null, this);
+		game.physics.arcade.overlap(collectorGroup2, platform, platformCollector2, null, this);
+		game.physics.arcade.overlap(collectorGroup3, platform, platformCollector3, null, this);
+		
+		// carrying the collectors & mothership
+		game.physics.arcade.overlap(player, collectorGroup1, grabCollector1, null, this);
+		game.physics.arcade.overlap(player, collectorGroup2, grabCollector2, null, this);
+		game.physics.arcade.overlap(player, collectorGroup3, grabCollector3, null, this);
+		
+		game.physics.arcade.overlap(particleGroup, collector1RangeGroup, collector1Pull, null, this);
+		game.physics.arcade.overlap(particleGroup, collectorGroup1, collector1Add, null, this);
+		
+		game.physics.arcade.overlap(particleGroup, collector2RangeGroup, collector2Pull, null, this);
+		game.physics.arcade.overlap(particleGroup, collectorGroup2, collector2Add, null, this);
+		
+		game.physics.arcade.overlap(particleGroup, collector3RangeGroup, collector3Pull, null, this);
+		game.physics.arcade.overlap(particleGroup, collectorGroup3, collector3Add, null, this);
+		
+		game.physics.arcade.overlap(collectorGroup1, mothershipDropoffGroup, collector1Dropoff, null, this);
+		game.physics.arcade.overlap(collectorGroup2, mothershipDropoffGroup, collector2Dropoff, null, this);
+		game.physics.arcade.overlap(collectorGroup3, mothershipDropoffGroup, collector3Dropoff, null, this);
+		game.physics.arcade.overlap(collectorGroup2, tutorialMark, tutorial5Delay, null, this);
+		game.physics.arcade.overlap(player, mothershipProximityGroup, mothershipExtend, null, this);
+	}
+	// End page
+	if(gamemode == 4)
+	{
+		endbackground = game.add.sprite(0, 0, 'thankyou1');
+		// aboutback button
+		backbutton = game.add.button(game.world.centerX -220,game.world.centerY + 200,'backbutton', settingBackOnClick, this, 1,0,2);
+		gamemode = 0;
+	}
+	// about page
+	if(gamemode == 5)
+	{
+		aboutbackground = game.add.sprite(0, 0, 'menu');
+		aboutbackground.animations.add('scroll');
+    	aboutbackground.animations.play('scroll', 8, true);
+		
+		abouttext = game.add.sprite(175,20, 'abouttext');
+		
+		// aboutback button
+		backbutton = game.add.button(game.world.centerX - 220,game.world.centerY + 200,'backbutton', aboutBackOnClick, this, 1,0,2);
+		gamemode = 0;
+	}
+	
+	if(gamemode == 6)
+	{
+		levelSelectTitle = game.add.sprite(210, 50, 'levelSelect');
+		//level select
+		gamemode = 0;
+		tutorial = game.add.button(game.world.centerX - 108, 185, 'tutorial', tutorialOnClick, this, 1,0,2);
+		level1easy = game.add.button(game.world.centerX - 140,280, 'level_1easy', easy1OnClick, this, 1,0,2,4);
+		if(unlockedCounter >= 2){
+			level2easy = game.add.button(game.world.centerX - 40,280, 'level_2easy', easy2OnClick, this, 1,0,2,4);
+			level2button = true;
+			console.log('level2: '+level2button);
+		}
+		if(unlockedCounter >= 3){
+			level3easy = game.add.button(game.world.centerX + 60,280, 'level_3easy', easy3OnClick, this, 1,0,2,4);
+			level3button = true;
+			console.log('level3: '+level3button);
+		}
+		if(unlockedCounter >= 4){
+			level4easy = game.add.button(game.world.centerX - 140,380, 'level_4med', easy4OnClick, this, 1,0,2,4);
+			level4button = true;
+			console.log('level4: '+level4button);
+		}
+		if(unlockedCounter >= 5){
+			level5easy = game.add.button(game.world.centerX - 40,380, 'level_5med', easy5OnClick, this, 1,0,2,4);
+			level5button = true;
+			console.log('level5: '+level5button);
+		}
+		if(unlockedCounter >= 6){
+			level6easy = game.add.button(game.world.centerX + 60,380, 'level_6med', easy6OnClick, this, 1,0,2,4);
+			level6button = true;
+			console.log('level6: '+level6button);
+		}
+		if(unlockedCounter >= 7){
+			level7easy = game.add.button(game.world.centerX - 90,480, 'level_7hard', easy7OnClick, this, 1,0,2,4);
+			level7button = true;
+			console.log('level7: '+level7button);
+		}
+		if(unlockedCounter >= 8){
+			level8easy = game.add.button(game.world.centerX + 10,480, 'level_8hard', easy8OnClick, this, 1,0,2,4);
+			level8button = true;
+			console.log('level8: '+level8button);
+		}
+		
+		// levelselect back button
+		backbutton2 = game.add.button(game.world.centerX + 130 ,game.world.centerY + 220,'backbutton', levelSelectBackOnClick, this, 1,0,2);
+		backbutton2.scale.setTo(0.85,0.85);
+	}
+
+	// unlock page
+	if(gamemode == 7){
+		unlockbackground = game.add.sprite(0, 0, 'menu');
+		unlockbackground.animations.add('scroll');
+    	unlockbackground.animations.play('scroll', 8, true);
+		
+		unlockablestext = game.add.sprite(240,20, 'unlockablesTitle');
+		unlockablestext.scale.setTo(0.2,0.2);
+		
+		if(unlockedCounter > 1 && mapUnlock1 == true){
+			unlock1 = game.add.sprite(40,120, 'unlock1');
+			unlock1.scale.setTo(0.3,0.3);
+			//  Enables all kind of input actions on this image (click, etc)
+			unlock1.inputEnabled = true;
+			unlock1.events.onInputDown.add(map1Listener, this);
+		}
+		else
+		{
+			unlock1 = game.add.sprite(40,120, 'locked1');
+			unlock1.scale.setTo(0.3,0.3);
+			//  Enables all kind of input actions on this image (click, etc)
+			unlock1.inputEnabled = true;
+			unlock1.events.onInputDown.add(map1Listener, this);
+		}
+		if(unlockedCounter > 2 && mapUnlock2 == true){
+			unlock2 = game.add.sprite(40,280, 'unlock2');
+			unlock2.scale.setTo(0.3,0.3);
+			unlock2.inputEnabled = true;
+			unlock2.events.onInputDown.add(map2Listener, this);
+		}
+		else
+		{
+			unlock2 = game.add.sprite(40,280, 'locked1');
+			unlock2.scale.setTo(0.3,0.3);
+			unlock2.inputEnabled = true;
+			unlock2.events.onInputDown.add(map2Listener, this);
+		}
+		if(unlockedCounter > 3 && mapUnlock3 == true){
+			unlock3 = game.add.sprite(280,120, 'unlock3');
+			unlock3.scale.setTo(0.3,0.3);
+			unlock3.inputEnabled = true;
+			unlock3.events.onInputDown.add(map3Listener, this);
+		}
+		else
+		{
+			unlock3 = game.add.sprite(280,120, 'locked1');
+			unlock3.scale.setTo(0.3,0.3);
+			unlock3.inputEnabled = true;
+			unlock3.events.onInputDown.add(map3Listener, this);
+		}
+		if(unlockedCounter > 4 && mapUnlock4 == true){
+			unlock4 = game.add.sprite(280,280, 'unlock4');
+			unlock4.scale.setTo(0.3,0.3);
+			unlock4.inputEnabled = true;
+			unlock4.events.onInputDown.add(map4Listener, this);
+		}
+		else
+		{
+			unlock4 = game.add.sprite(280,280, 'locked1');
+			unlock4.scale.setTo(0.3,0.3);
+			unlock4.inputEnabled = true;
+			unlock4.events.onInputDown.add(map4Listener, this);
+		}
+		if(unlockedCounter > 5 && mapUnlock5 == true){
+			unlock5 = game.add.sprite(520,120, 'unlock5');
+			unlock5.scale.setTo(0.3,0.3);
+			unlock5.inputEnabled = true;
+			unlock5.events.onInputDown.add(map5Listener, this);
+		}
+		else
+		{
+			unlock5 = game.add.sprite(520,120, 'locked1');
+			unlock5.scale.setTo(0.3,0.3);
+			unlock5.inputEnabled = true;
+			unlock5.events.onInputDown.add(map5Listener, this);
+		}
+		if(unlockedCounter > 6 && mapUnlock6 == true){
+			unlock6 = game.add.sprite(520,280, 'unlock6');
+			unlock6.scale.setTo(0.3,0.3);
+			unlock6.inputEnabled = true;
+			unlock6.events.onInputDown.add(map6Listener, this);
+		}
+		else
+		{
+			unlock6 = game.add.sprite(520,280, 'locked1');
+			unlock6.scale.setTo(0.3,0.3);
+			unlock6.inputEnabled = true;
+			unlock6.events.onInputDown.add(map6Listener, this);
+		}
+		if(unlockedCounter > 7 && mapUnlock7 == true){
+			unlock7 = game.add.sprite(760,120, 'unlock7');
+			unlock7.scale.setTo(0.3,0.3);
+			unlock7.inputEnabled = true;
+			unlock7.events.onInputDown.add(map7Listener, this);
+		}
+		else
+		{
+			unlock7 = game.add.sprite(760,120, 'locked1');
+			unlock7.scale.setTo(0.3,0.3);
+			unlock7.inputEnabled = true;
+			unlock7.events.onInputDown.add(map7Listener, this);
+		}
+		if(unlockedCounter > 8 && mapUnlock8 == true){
+			unlock8 = game.add.sprite(760,280, 'unlock8');
+			unlock8.scale.setTo(0.3,0.3);
+			unlock8.inputEnabled = true;
+			unlock8.events.onInputDown.add(map8Listener, this);
+		}
+		else
+		{
+			unlock8 = game.add.sprite(760,280, 'locked1');
+			unlock8.scale.setTo(0.3,0.3);
+			unlock8.inputEnabled = true;
+			unlock8.events.onInputDown.add(map8Listener, this);
+		}
+		// back button
+		backbutton = game.add.button(game.world.centerX + 40,game.world.centerY + 140,'backbutton', unlockBackOnClick, this, 1,0,2);
+		gamemode = 0;
+	}
+}
+
+//activates the shield on pickup
+function powerupShield()
+{
+	shielded = 1;
+	shieldStrength = 3;
+	shieldPickup.kill();	
+}
+
+//activates the ship collector
+function shipCollection()
+{
+	shipCollectPickup.kill();
+	shipCollecting = 1;
+	
+	setTimeout("stopShipCollection()", 20000);
+	playerDrain.loop = true;
+	playerDrain.play();
+}
+
+//stops ship collection
+function stopShipCollection()
+{
+	shipCollecting = 0;	
+	playerDrain.stop();
+}
+
+//extends mothership if player is near
+function mothershipExtend()
+{
+	if (mothershipTop.body.position.y < 510){
+		mothershipExtended = 1;	
+	}
+	
+	if (carrying == 1 && mothershipExtended == 0){
+		mothershipTop.body.velocity.y = -200;
+		mothershipBottom.body.velocity.y = -200;
+		mothershipCollision.body.velocity.y = -200;
+	}
+	
+	if (mothershipExtended == 1){
+		mothershipTop.body.velocity.y = 0;
+		mothershipBottom.body.velocity.y = 0;
+		mothershipCollision.body.velocity.y = 0;	
+	}
+}
+
+// spacejunk reset
+function resetJunk(spacejunk) 
+{
+	spacejunk.body.velocity.x = -spacejunk.body.velocity.x;
+}
+// clear level select
+function clearLevelSelect()
+{
+	main.destroy();
+	backbutton2.destroy();
+	levelSelectTitle.destroy();
+	tutorial.destroy();
+	level1easy.destroy();
+	for(var i = 0; i <= unlockedCounter; i++){
+		console.log('i: '+i);
+		if(level2button == true){
+			level2easy.destroy();
+		}
+		if(level3button == true){
+			level3easy.destroy();
+		}
+		if(level4button == true){
+			level4easy.destroy();
+		}
+		if(level5button == true){
+			level5easy.destroy();
+		}
+		if(level6button == true){
+			level6easy.destroy();
+		}
+		if(level7button == true){
+			level7easy.destroy();
+		}
+		if(level8button == true){
+			level8easy.destroy();
+		}
+		
+		level2button = false;
+		level3button = false;
+		level4button = false;
+		level5button = false;
+		level6button = false;
+		level7button = false;
+		level8button = false;
+		
+	}
+	
+	console.log('unlockedCounter: '+unlockedCounter);
+	console.log('unlocked: '+unlocked);
+}
+
+function mainBackOnClick()
+{
+	reset();
+	starfield.destroy();
+	starfield2.destroy();
+	if(levelselect == 5 || levelselect == 6){
+		starfield3.destroy();
+	}
+	if(continueCounter == true){
+	continuebutton.destroy();
+	}
+	if(replayCounter == true){
+	replaybutton.destroy();
+	}
+	if(backCounter == true){
+	backbutton.destroy();
+	}
+	continueCounter = false;
+	replayCounter = false;
+	backCounter = false;
+	//shieldPickup.destroy();
+	wallGroup.destroy();
+	particleGroup.destroy();
+	spacejunkGroup.destroy();
+	mothershipProximityGroup.destroy();
+	mothershipDropoffGroup.destroy();
+	collectorGroup1.destroy();
+	collectorGroup2.destroy();
+	collectorGroup3.destroy();
+	collector1RangeGroup.destroy();
+	collector2RangeGroup.destroy();
+	collector3RangeGroup.destroy();
+	tutorialMark.destroy();
+	scoreDisplay.destroy();
+	beep.play();
+	clearLevelSelect();
+	gamemode = 1;
+}
+
+function startOnClick() 
+{
+	gamemode = 6;
+	beep.play();
+	maintitle.destroy();
+	
+	start.destroy();
+	about.destroy();
+	unlockables.destroy();
+}
+
+function aboutOnClick() {
+	gamemode = 5;
+	beep.play();
+	maintitle.destroy();
+	main.destroy();
+	start.destroy();
+	about.destroy();
+	unlockables.destroy();
+}
+
+function unlockOnClick() {
+	gamemode = 7;
+	beep.play();
+	maintitle.destroy();
+	main.destroy();
+	start.destroy();
+	about.destroy();
+	unlockables.destroy();
+}
+
+function continueOnClick(){
+	beep.play();
+	reset();
+	levelselect = unlocked;
+	scorescreen.destroy();
+	continuebutton.destroy();
+	replaybutton.destroy();
+	backbutton.destroy();
+	continueCounter = false;
+	replayCounter = false;
+	backCounter = false;
+	
+	gamemode = 6;
+	gamemode = 2;
+	clearLevelSelect();
+	console.log('gamemode: '+gamemode);
+	console.log('Levelselect: '+levelselect);
+	
+}
+
+function replayOnClick()
+{
+	console.log('replay clicked\n'+'gamemode: '+gamemode+'\n'+'levelselect: '+levelselect +'\n'+ 'unlocked: '+unlocked +'\n'+'collector1Dead: '+ collector1Dead +'\n'+ 'collector2Dead' + collector2Dead +'\n'+ 'collector3Dead'+collector3Dead+'\n');
+	beep.play();
+	reset();
+	levelselect = levelselect;
+	scorescreen.destroy();
+	if(continueCounter == true){
+		continuebutton.destroy();
+	}
+	if(replayCounter == true){
+		replaybutton.destroy();
+	}
+	if(backCounter == true){
+		backbutton.destroy();
+	}
+	continueCounter = false;
+	replayCounter = false;
+	backCounter = false;
+	gamemode = 6;
+	gamemode = 2;
+	clearLevelSelect();
+}
+
+function tutorialOnClick() {
+	beep.play();
+	maintitle.destroy()
+	start.destroy();
+	about.destroy();
+	tutorial.destroy();
+	tutorialTextSelect = 0;
+	levelselect = 10;
+	gamemode = 2;
+	clearLevelSelect();
+}
+
+// Levels on click
+function easy1OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 1;
+	unlocked = 1;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy2OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 2;
+	unlocked = 2;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy3OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 3;
+	unlocked = 3;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy4OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 4;
+	unlocked = 4;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy5OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 5;
+	unlocked = 5;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy6OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 6;
+	unlocked = 6;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy7OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 7;
+	unlocked = 7;
+	gamemode = 2;
+	clearLevelSelect();
+}
+function easy8OnClick() {
+	beep.play();
+	//main.destroy();
+	levelselect = 8;
+	unlocked = 8;
+	gamemode = 2;
+	clearLevelSelect();
+}
+
+function levelSelectBackOnClick(){
+	clearLevelSelect();
+	gamemode = 1;
+}
+
+
+function tutorialText(){
+	if (tutorialTextSelect == 0){
+		tutorial1.destroy();
+		tutorialTextSelect = 1;
+		tutorial2 = game.add.button(0,0,'tut2', tutorialText, this);
+	}
+	else if (tutorialTextSelect == 1){
+		tutorial2.destroy();
+		tutorialTextSelect = 2;
+		tutorial3 = game.add.button(0,0,'tut3', tutorialText, this);
+	}
+	else if (tutorialTextSelect == 2){
+		tutorial3.destroy();
+		tutorialTextSelect = 3;
+		tutorial4 = game.add.button(0,0,'tut4', tutorialText, this);
+	}
+	else if (tutorialTextSelect == 3){
+		tutorial4.destroy();
+		tutorialTextSelect = 4;
+	}
+	else if (tutorialTextSelect == 4){
+		tutorial5.destroy();
+		tutorialTextSelect = 5;
+		for(var i = 0; i < 8; i++){
+			var particleSelect = Math.ceil(Math.random() * 3);
+			var rand = Math.ceil(Math.random() * 100);
+						
+			if (particleSelect == 1){
+				var particle = particleGroup.create((3.5*i)+30,15*i, 'particle1');
+			}
+			else if (particleSelect == 2){
+				var particle = particleGroup.create((3.5*i)+30,15*i, 'particle2');
+			}
+			else if (particleSelect == 3){
+				var particle = particleGroup.create((3.5*i)+30,15*i, 'particle3');
+			}
+			
+			particle.body.bounce.set(1);
+			particle.body.velocity.setTo(35, 150);
+		}
+		setTimeout("tutorial6Create()", 16000);
+	}
+	else if (tutorialTextSelect == 5){
+		tutorial6.destroy();
+		tutorialTextSelect = 6;
+		tutorial7 = game.add.button(0,0,'tut7', tutorialText, this);	
+	}
+	else if (tutorialTextSelect == 6){
+		tutorial7.destroy();
+		tutorialTextSelect = 7;
+		tutorial8 = game.add.button(0,0,'tut8', tutorialText, this);	
+	}
+	else if (tutorialTextSelect == 7){
+		tutorial8.destroy();
+		tutorialTextSelect = 8;	
+	}
+	else if (tutorialTextSelect == 8){
+		tutorial9.destroy();
+		tutorialTextSelect = 9;	
+		for(var i = 0; i < 10; i++){
+			var particleSelect = Math.ceil(Math.random() * 3);
+			var rand = Math.ceil(Math.random() * 100);
+			//console.log(isSpawning);
+			
+			if (particleSelect == 1){
+				var particle = particleGroup.create(10*i,270, 'particle1');
+			}
+			else if (particleSelect == 2){
+				var particle = particleGroup.create(10*i,270, 'particle2');
+			}
+			else if (particleSelect == 3){
+				var particle = particleGroup.create(10*i,270, 'particle3');
+			}
+			
+			particle.body.bounce.set(1);
+			particle.body.velocity.setTo(120,0);
+			particle.frame = 3;
+		}
+		setTimeout("tutorial10Create()", 16000);
+	}
+	else if (tutorialTextSelect == 9){
+		tutorial10.destroy();
+		tutorialTextSelect = 10;
+		tutorial11 = game.add.button(0,0,'tut11', tutorialText, this);
+	}
+	else if (tutorialTextSelect == 10){
+		tutorial11.destroy();
+		tutorialTextSelect = 11;
+		tutorial12 = game.add.button(0,0,'tut12', tutorialText, this);
+	}
+	else if (tutorialTextSelect == 11){
+		tutorial12.destroy();
+		tutorialTextSelect = 12;
+		tutorial13 = game.add.button(0,0,'tut13', tutorialText, this);
+	}
+	else if (tutorialTextSelect == 12){
+		tutorial13.destroy();
+		gamemode = 1;
+		reset();
+		starfield.destroy();
+		starfield2.destroy();
+		continuebutton.destroy();
+		replaybutton.destroy();
+		backbutton.destroy();
+		//shieldPickup.destroy();
+		wallGroup.destroy();
+		particleGroup.destroy();
+		spacejunkGroup.destroy();
+		mothershipProximityGroup.destroy();
+		mothershipDropoffGroup.destroy();
+		collectorGroup1.destroy();
+		collectorGroup2.destroy();
+		collectorGroup3.destroy();
+		collector1RangeGroup.destroy();
+		collector2RangeGroup.destroy();
+		collector3RangeGroup.destroy();
+	}
+}
+
+function tutorial5Delay(){
+	if (carryingCollector2 == 0){
+		tutorialMark.destroy();
+		setTimeout("tutorial5Create()",3000);
+	}
+}
+
+function tutorial5Create(){
+	tutorial5 = game.add.button(0,0,'tut5', tutorialText, this);
+}
+
+function tutorial6Create(){
+	tutorial6 = game.add.button(0,0,'tut6', tutorialText, this);
+}
+
+function tutorial10Create(){
+	tutorial10 = game.add.button(0,0,'tut10', tutorialText, this);
+}
+
+
+function settingBackOnClick() {
+	beep.play();
+	gamemode = 1;
+	endbackground.destroy();
+	backbutton.destroy();
+}
+function aboutBackOnClick() {
+	beep.play();
+	gamemode = 1;
+	aboutbackground.destroy();
+	abouttext.destroy();
+	backbutton.destroy();
+}
+function unlockBackOnClick(){
+	beep.play();
+	gamemode = 1;
+	backbutton.destroy();
+	//console.log('unlock backbutton destroyed?');
+	unlockbackground.destroy();
+	if(unlockedCounter > 1)
+	{
+		unlock1.destroy();
+	}
+	if(unlockedCounter > 2)
+	{
+		unlock2.destroy();
+	}
+	if(unlockedCounter > 3){
+		unlock3.destroy();
+	}
+	if(unlockedCounter > 4){
+		unlock4.destroy();
+	}
+	if(unlockedCounter > 5){
+		unlock5.destroy();
+	}
+	if(unlockedCounter > 6){
+		unlock6.destroy();
+	}
+	if(unlockedCounter > 7){
+		unlock7.destroy();
+	}
+	if(unlockedCounter >= 8){
+		unlock8.destroy();
+	}
+	
+	
+
+}
+//player collide particleGroup
+function healthDamagedbyParticle(player, particle)
+{
+	if (particle.frame < 3){
+		particle.kill();
+		
+		partHit.play();
+		particleCount--;
+		if (shielded == 0)
+		{
+			currentHealth -= 5;
+			healthbar.scale.setTo((currentHealth/maxHealth)*.21,.2);
+			
+			if (currentHealth <= 0) {
+				healthbar.scale.setTo(0,0);
+				playerDead();
+				thruster.stop();
+			}
+		}
+		else
+		{
+			shieldStrength -= 1;	
+		}
+	}
+	else if (shipCollecting == 1)
+	{
+		particle.kill();
+		score += 1;	
+		particleCount--;
+	}
+}
+//player collide spacejunkGroup
+function healthDamagedbySpacejunk(player, spacejunkGroup)
+{
+	spacejunkGroup.body.velocity.y = 0;
+	if(spacejunkGroup.body.velocity.x==0 || spacejunk_right == true) 
+	{
+		spacejunkGroup.body.velocity.x = -50;
+	}
+	else
+	{
+		spacejunkGroup.body.velocity.x = 50;
+	}
+	currentHealth -= 1;
+	healthbar.scale.setTo((currentHealth/maxHealth)*.21,.2);
+	
+	if (currentHealth <= 0) {
+		healthbar.scale.setTo(0,0);
+		console.log("currentHealth" +currentHealth);
+		playerDead();
+		thruster.stop();
+	}
+}
+
+function spacejunkCollidebyParticle(particleGroup, spacejunkGroup)
+{
+	spacejunkGroup.body.velocity.y = 0;
+	if(spacejunkGroup.body.velocity.x==0 || spacejunk_right == true) 
+	{
+		spacejunkGroup.body.velocity.x = -50;
+	}
+	else
+	{
+		spacejunkGroup.body.velocity.x = 50;
+	}
+	
+}
+
+function collector1Pull(particle, collector1Range)
+{
+	if (carryingCollector1 == 0 && collector1Full == 0 && collector1DropoffSwitch == 0 && particle.frame >= 3 && collector1Platform == 0)
+	{
+		game.physics.arcade.accelerateToObject(particle, collector1, 10000, 0, 10000);
+	}
+}
+
+function collector1Add(particle, collector1)
+{
+	if(carryingCollector1 == 0 && collector1Full == 0 && collector1DropoffSwitch == 0 && particle.frame >= 3)
+	{
+		particle.kill();
+		collector1Count++;
+		particleCount--;
+		if (collector1Count >= collector1Capacity){
+			collector1Full = 1;	
+			podExplosion.play();
+			collector1.animations.play('full');
+			podDrain1.stop();
+			collector1Range.animations.play('stop');
+			t1 = setTimeout("collector1Overload()", 10000);
+		}
+	}
+}
+
+function collector2Pull(particle, collector2Range)
+{
+	if (carryingCollector2 == 0 && collector2Full == 0 && collector2DropoffSwitch == 0 && particle.frame >= 3 && collector2Platform == 0)
+	{
+		game.physics.arcade.accelerateToObject(particle, collector2, 10000, 0, 10000);
+	}
+}
+
+function collector2Add(particle, collector2)
+{
+	if (carryingCollector2 == 0 && collector2Full == 0 && collector2DropoffSwitch == 0 && particle.frame >= 3)
+	{
+		particle.kill();
+		collector2Count++;
+		particleCount--;
+		if (collector2Count >= collector2Capacity){
+			collector2Full = 1;	
+			podExplosion.play();
+			collector2.animations.play('full');
+			podDrain2.stop();
+			collector2Range.animations.play('stop');
+			t2 = setTimeout("collector2Overload()", 10000);
+		}
+	}
+}
+
+function collector3Pull(particle, collector3Range)
+{
+	if (carryingCollector3 == 0 && collector3Full == 0 && collector3DropoffSwitch == 0 && particle.frame >= 3 && collector3Platform == 0)
+	{
+		game.physics.arcade.accelerateToObject(particle, collector3, 10000, 0, 10000);
+	}
+}
+
+function collector3Add(particle, collector3)
+{
+	if (carryingCollector3 == 0 && collector3Full == 0 && collector3DropoffSwitch == 0 && particle.frame >= 3)
+	{
+		particle.kill();
+		collector3Count++;
+		particleCount--;
+		if (collector3Count >= collector3Capacity){
+			collector3Full = 1;	
+			podExplosion.play();
+			collector3.animations.play('full');
+			podDrain3.stop();
+			collector3Range.animations.play('stop');
+			t3 = setTimeout("collector3Overload()", 10000);
+		}
+	}
+}
+
+//set of animation functions for unloading the collectors
+function collector1Dropoff(collector, dropoff)
+{
+	if(carryingCollector1 == 0 && collector1DropoffSwitch == 0)
+	{
+		collector1DropoffSwitch = 1;
+		collector1Full = 0;
+		collector1Range.animations.play('stop');
+		podDrain1.stop();
+		podExplosion.stop();
+		clearTimeout(t1);
+				
+		collector1.body.position.x = mothershipDropoff.body.position.x - 6;
+		collector1.body.position.y = mothershipDropoff.body.position.y - 10;
+		collector1.body.velocity.y = 61;
+		setTimeout("collector1Empty()", 900);
+	}
+}
+
+function collector1Empty()
+{
+	collector1.body.velocity.y = 0;
+	collector1.animations.play('drain');
+	collector1.animations.currentAnim.frame = 11 - (Math.floor((collector1Count / collector1Capacity) * 11));
+	setTimeout("collector1Eject()", 1500);
+}
+
+function collector1Eject()
+{
+	score = score + collector1Count;
+	collector1Count = 0;
+	collector1.body.velocity.y = 61;
+	setTimeout("collector1Replace()", 1000);
+}
+
+function collector1Replace()
+{
+	collector1.kill();
+	collector1 = collectorGroup1.create(855, 581, 'collector');
+	
+	collector1.animations.add('full', [10, 11], 2, true);
+	collector1.animations.add('drain', [11,10,9,8,7,6,5,4,3,2,1,0], 8, false);
+	collector1.frame = 0;
+	collector1.body.velocity.y = -68;
+	setTimeout("collector1Stop()", 650);
+}
+
+function collector1Stop()
+{
+	collector1.body.velocity.y = 0;
+	collector1DropoffSwitch = 0;
+}
+
+function collector2Dropoff(collector, dropoff)
+{
+	if(carryingCollector2 == 0 && collector2DropoffSwitch == 0)
+	{
+		collector2DropoffSwitch = 1;
+		collector2Full = 0;
+		collector2Range.animations.play('stop');
+		podDrain2.stop();
+		podExplosion.stop();
+		clearTimeout(t2);
+		
+		
+		collector2.body.position.x = mothershipDropoff.body.position.x - 6;
+		collector2.body.position.y = mothershipDropoff.body.position.y - 10;
+		collector2.body.velocity.y = 61;
+		setTimeout("collector2Empty()", 900);
+	}
+}
+
+function collector2Empty()
+{
+	collector2.body.velocity.y = 0;
+	collector2.animations.play('drain');
+	collector2.animations.currentAnim.frame = 11 - (Math.floor((collector2Count / collector2Capacity) * 11));
+	setTimeout("collector2Eject()", 1500);
+}
+
+function collector2Eject()
+{
+	score = score + collector2Count;
+	collector2Count = 0;
+	collector2.body.velocity.y = 61;
+	setTimeout("collector2Replace()", 1000);
+}
+
+function collector2Replace()
+{
+	collector2.kill();
+	collector2 = collectorGroup2.create(912, 581, 'collector');
+	
+	collector2.animations.add('full', [10, 11], 2, true);
+	collector2.animations.add('drain', [11,10,9,8,7,6,5,4,3,2,1,0], 8, false);
+	collector2.frame = 0;
+	collector2.body.velocity.y = -68;
+	setTimeout("collector2Stop()", 650);
+}
+
+function collector2Stop()
+{
+	collector2.body.velocity.y = 0;
+	collector2DropoffSwitch = 0;
+	if (levelselect == 10 && tutorialTextSelect == 8){
+		tutorial9 = game.add.button(0,0,'tut9', tutorialText, this);	
+	}
+}
+
+function collector3Dropoff(collector, dropoff)
+{
+	if(carryingCollector3 == 0 && collector3DropoffSwitch == 0)
+	{
+		collector3DropoffSwitch = 1;
+		collector3Full = 0;
+		collector3Range.animations.play('stop');
+		podDrain3.stop();
+		podExplosion.stop();
+		clearTimeout(t3);
+		
+		
+		collector3.body.position.x = mothershipDropoff.body.position.x - 6;
+		collector3.body.position.y = mothershipDropoff.body.position.y - 10;
+		collector3.body.velocity.y = 61;
+		setTimeout("collector3Empty()", 900);
+	}
+}
+
+function collector3Empty()
+{
+	collector3.body.velocity.y = 0;
+	collector3.animations.play('drain');
+	collector3.animations.currentAnim.frame = 11 - (Math.floor((collector3Count / collector3Capacity) * 11));
+	setTimeout("collector3Eject()", 1500);
+}
+
+function collector3Eject()
+{
+	score = score + collector3Count;
+	collector3Count = 0;
+	collector3.body.velocity.y = 61;
+	setTimeout("collector3Replace()", 1000);
+}
+
+function collector3Replace()
+{
+	collector3.kill();
+	collector3 = collectorGroup3.create(967, 581, 'collector');
+	
+	collector3.animations.add('full', [10, 11], 2, true);
+	collector3.animations.add('drain', [11,10,9,8,7,6,5,4,3,2,1,0], 8, false);
+	collector3.frame = 0;
+	collector3.body.velocity.y = -68;
+	setTimeout("collector3Stop()", 650);
+}
+
+function collector3Stop()
+{
+	collector3.body.velocity.y = 0;
+	collector3DropoffSwitch = 0;
+}
+
+//grabbing and placing functions for each collector
+function grabCollector1(player, collector)
+{
+	/*
+	if (actionKey.isDown && carrying == 0 && actionLimiter == 0 && collector1DropoffSwitch == 0)
+	{
+		carrying = 1;
+		carryingCollector1 = 1;
+		actionLimiter = 1;
+		collector1Range.animations.play('stop');
+	}
+	else if (actionKey.isDown && carrying == 1 && actionLimiter == 0 && collector1DropoffSwitch == 0)
+	{
+		carrying = 0;
+		carryingCollector1 = 0;
+		actionLimiter = 1;
+		collector1Range.animations.play('collect');
+	}
+	else if (!actionKey.isDown)
+	{
+		actionLimiter = 0;
+	}
+	*/
+	//if on tap has tap 
+	if (game.input.activePointer.justPressed() && carrying == 0 && actionLimiter == 0 && collector1DropoffSwitch == 0)
+	{
+		carrying = 1;
+		carryingCollector1 = 1;
+		actionLimiter = 1;
+		collector1Range.animations.play('stop');
+		podDrain1.stop();
+	}
+	else if (game.input.activePointer.justPressed() && carrying == 1 && actionLimiter == 0 && collector1DropoffSwitch == 0)
+	{
+		carrying = 0;
+		carryingCollector1 = 0;
+		actionLimiter = 1;
+		if (collector1Full == 0)
+		{
+			collector1Range.animations.play('collect');
+			podDrain1.play();
+		}
+	}
+	// if no tap 
+	else if (!game.input.activePointer.justPressed())
+	{
+		actionLimiter = 0;
+	}
+
+	if (carryingCollector1 == 1)
+	{
+		
+		collector.body.position.x = player.body.position.x + 4;
+		collector.body.position.y = player.body.position.y;
+	}	
+}
+
+function grabCollector2(player, collector)
+{
+	/*if (actionKey.isDown && carrying == 0 && actionLimiter == 0 && collector2DropoffSwitch == 0)
+	{
+		carrying = 1;
+		carryingCollector2 = 1;
+		actionLimiter = 1;
+		collector2Range.animations.play('stop');
+	}
+	else if (actionKey.isDown && carrying == 1 && actionLimiter == 0 && collector2DropoffSwitch == 0)
+	{
+		carrying = 0;
+		carryingCollector2 = 0;
+		actionLimiter = 1;
+		collector2Range.animations.play('collect');
+	}
+	else if (!actionKey.isDown)
+	{
+		actionLimiter = 0;
+	}*/
+	if (game.input.activePointer.justPressed() && carrying == 0 && actionLimiter == 0 && collector2DropoffSwitch == 0)
+	{
+		carrying = 1;
+		carryingCollector2 = 1;
+		actionLimiter = 1;
+		collector2Range.animations.play('stop');
+		podDrain2.stop();
+	}
+	else if (game.input.activePointer.justPressed() && carrying == 1 && actionLimiter == 0 && collector2DropoffSwitch == 0)
+	{
+		carrying = 0;
+		carryingCollector2 = 0;
+		actionLimiter = 1;
+		if (collector2Full == 0)
+		{
+			collector2Range.animations.play('collect');
+			podDrain2.play();
+		}
+	}
+	else if (!game.input.activePointer.justPressed())
+	{
+		actionLimiter = 0;
+	}
+	
+	if (carryingCollector2 == 1)
+	{
+		
+		collector.body.position.x = player.body.position.x + 4;
+		collector.body.position.y = player.body.position.y;
+	}
+}
+
+function grabCollector3(player, collector)
+{
+	/*if (actionKey.isDown && carrying == 0 && actionLimiter == 0 && collector3DropoffSwitch == 0)
+	{
+		carrying = 1;
+		carryingCollector3 = 1;
+		actionLimiter = 1;
+		collector3Range.animations.play('stop');
+	}
+	else if (actionKey.isDown && carrying == 1 && actionLimiter == 0 && collector3DropoffSwitch == 0)
+	{
+		carrying = 0;
+		carryingCollector3 = 0;
+		actionLimiter = 1;
+		collector3Range.animations.play('collect');
+	}
+	else if (!actionKey.isDown)
+	{
+		actionLimiter = 0;
+	}*/
+	if (game.input.activePointer.justPressed() && carrying == 0 && actionLimiter == 0 && collector3DropoffSwitch == 0)
+	{
+		carrying = 1;
+		carryingCollector3 = 1;
+		actionLimiter = 1;
+		collector3Range.animations.play('stop');
+		podDrain3.stop();
+	}
+	else if (game.input.activePointer.justPressed() && carrying == 1 && actionLimiter == 0 && collector3DropoffSwitch == 0)
+	{
+		carrying = 0;
+		carryingCollector3 = 0;
+		actionLimiter = 1;
+		if (collector3Full == 0)
+		{
+			collector3Range.animations.play('collect');
+			podDrain3.play();
+		}
+	}
+	else if (!game.input.activePointer.justPressed())
+	{
+		actionLimiter = 0;
+	}
+	
+	if (carryingCollector3 == 1)
+	{
+		
+		collector.body.position.x = player.body.position.x + 3;
+		collector.body.position.y = player.body.position.y ;
+	}
+}
+
+function collector1Overload(){
+	if (carryingCollector1 == 1)
+	{
+		carryingCollector1 = 0;
+		if (carryingCollector2 == 0 && carryingCollector3 == 0){
+			carrying = 0;
+		}
+	}
+	collector1Dead = 1;
+	collector1.kill();
+	collector1Range.kill();
+}
+
+function collector2Overload(){
+	if (carryingCollector2 == 1)
+	{
+		carryingCollector2 = 0;
+		if (carryingCollector1 == 0 && carryingCollector3 == 0){
+			carrying = 0;
+		}
+	}
+	collector2Dead = 1;
+	collector2.kill();
+	collector2Range.kill();
+}
+
+function collector3Overload(){
+	if (carryingCollector3 == 1)
+	{
+		carryingCollector3 = 0;
+		if (carryingCollector1 == 0 && carryingCollector2 == 0){
+			carrying = 0;
+		}
+	}
+	collector3Dead = 1;
+	collector3.kill();
+	collector3Range.kill();
+}
+
+// bounce physics
+function bounceBounds(particle)
+{
+	if (particle.frame == 0){
+		particle.frame = 1;	
+	}
+	else if (particle.frame == 1){
+		particle.frame = 2;	
+	}
+	else if (particle.frame == 2){
+		particle.frame = 3;	
+	}
+}
+// mothership collide
+function motherShipCollide(){
+	player.body.velocity.y = -10;
+	
+	if (player.body.position.x > 500){
+		player.body.velocity.x = 10;	
+	}
+}
+
+function playerDead()
+{
+	console.log("gameover");
+	playerDeath = 1;
+	thruster.stop();
+	player.destroy();
+	//game.paused=true;
+	setTimeout("showScore()", 2500);
+	
+}
+
+function showScorebuttons()
+{
+	if(continueCounter){
+		// continue to next level 
+		continuebutton = game.add.button(game.world.centerX-240,game.world.centerY+30,'continuebutton', continueOnClick, this, 1,0,2);
+	}
+	if(replayCounter){
+		// replay current level 
+	replaybutton = game.add.button(game.world.centerX-240,game.world.centerY+170,'replaybutton', replayOnClick, this, 1,0,2);
+	}
+	if(backCounter){
+		// back to main menu button
+	backbutton = game.add.button(game.world.centerX-240,game.world.centerY+100,'backbutton', mainBackOnClick, this, 1,0,2);
+	}
+	
+	
+}
+
+function showScore()
+{
+	
+	//revamped to change point goal for each level
+	gamemode = 0;
+
+	if(levelselect == 1)
+	{
+		if(score >= 20)
+		{
+			continueCounter = true;
+			if(score >= 30)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock1 = true;
+				if(newmap1 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap1 = false;
+				}
+			}
+			else
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel1 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel1 = false;
+			}
+		}
+		else if(score >=10)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+			
+	if(levelselect == 2)
+	{
+		if(score >= 25)
+		{
+			continueCounter = true;
+			if(score >= 40)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock2 = true;
+				if(newmap2 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap2 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel2 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel2 = false;
+			}
+		}
+		else if(score >=10)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+	
+	if(levelselect == 3)
+	{
+		if(score >= 30)
+		{
+			continueCounter = true;
+			if(score >= 45)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock3 = true;
+				if(newmap3 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap3 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel3 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel3 = false;
+			}
+		}
+		else if(score >=15)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+	
+	if(levelselect == 4)
+	{
+		if(score >= 20)
+		{
+			continueCounter = true;
+			if(score >= 30)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock4 = true;
+				if(newmap4 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap4 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel4 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel4 = false;
+			}
+		}
+		else if(score >=10)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+	
+	if(levelselect == 5)
+	{
+		if(score >= 15)
+		{
+			continueCounter = true;
+			if(score >= 25)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock5 = true;
+				if(newmap5 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap5 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel5 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel5 = false;
+			}
+		}
+		else if(score >=10)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+	
+	if(levelselect == 6)
+	{
+		if(score >= 25)
+		{
+			continueCounter = true;
+			if(score >= 35)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock6 = true;
+				if(newmap6 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap6 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel6 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel6 = false;
+			}
+		}
+		else if(score >=15)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+	
+	if(levelselect == 7)
+	{
+		if(score >= 45)
+		{
+			continueCounter = true;
+			if(score >= 65)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock7 = true;
+				if(newmap7 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap7 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+			if(newlevel7 == true)
+			{
+				newlevel = game.add.sprite(0,95, 'newlevelunlocked');
+				newlevel.scale.setTo(0.5,0.5);
+				newlevel7 = false;
+			}
+		}
+		else if(score >=20)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+	
+	if(levelselect == 8)
+	{
+		if(score >= 40)
+		{
+			continueCounter = true;
+			if(score >= 60)
+			{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen3');
+				mapUnlock8 = true;
+				if(newmap8 == true)
+				{
+					newmap = game.add.sprite(0,65, 'newmapunlocked');
+					newmap.scale.setTo(0.5,0.5);
+					newmap8 = false;
+				}
+			}
+			else{
+				scorescreen = game.add.sprite(0, 0, 'scorescreen2');
+			}
+		}
+		else if(score >=20)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen1');
+		}
+		else if(score >= 0)
+		{
+			scorescreen = game.add.sprite(0, 0, 'scorescreen0');
+		}
+	}
+		
+
+	replayCounter = true;
+	backCounter = true;
+	
+	if(unlocked == levelselect){
+		unlocked = unlocked + 1;
+	}
+	if(unlockedCounter < unlocked){
+		unlockedCounter = unlocked;
+	}
+	console.log('The max level unlocked (unlockedCounter): '+ unlockedCounter);
+	console.log('The next level (unlocked): '+unlocked);
+	console.log('The current level (levelselect): ' +levelselect);
+		
+	showScorebuttons();
+	player.kill();
+	shipExplosion.kill();
+	shipCollectPickup.kill();
+	shieldPickup.kill();
+	shield.kill();
+	playerCollector.kill();
+	collectorExplosion1.destroy();
+	collectorExplosion2.destroy();
+	collectorExplosion3.destroy();
+	playerCollector.kill();
+	thruster.stop();
+	podExplosion.stop();
+	console.log('Level Unlocked: ' + unlocked);
+	console.log('Continue:' + continueCounter);
+}
+//Destroy collectors in explosion
+function destroyExplosion1(){
+	collectorExplosion1.kill();	
+}
+
+function destroyExplosion2(){
+	collectorExplosion2.kill();	
+}
+
+function destroyExplosion3(){
+	collectorExplosion3.kill();	
+}
+
+function destroyShipExplosion(){
+	shipExplosion.kill();	
+}
+
+function reset()
+{
+	currentHealth = 50;
+	shieldStrength = 0;
+	collector1Count = 0;
+	collector1Full = 0;
+	collector2Count = 0;
+	collector2Full = 0;
+	collector3Count = 0;
+	collector3Full = 0;
+	collector1Platform = 0;
+	collector2Platform = 0;
+	collector3Platform = 0;
+	collector1Dead = 0;
+	collector2Dead = 0;
+	collector3Dead = 0;
+	clearTimeout(t1);
+	clearTimeout(t2);
+	clearTimeout(t3);
+	score = 0;
+	timecheck = 0;
+	delaycheck = 0;
+	delay = 1;
+	isSpawning = 0;
+	thrustCheck = 0;
+	thruster.stop();
+	//edit
+	music.stop();
+	music2.stop();
+	menu.stop();
+	musicLoop = 0;
+	explosionCheck = 0;
+	levelCountdown = 30;
+	carrying = 0;
+	particleCount = -1;
+}
+
+function checkPods()
+{
+	if(levelselect == 1 && collector2Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 2 && collector1Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 3 && collector1Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 4 && collector1Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 5 && collector1Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 6 && collector1Dead == 2 && collector2Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 7 && collector1Dead == 2 && collector2Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+	if(levelselect == 8 && collector1Dead == 2 && collector2Dead == 2 && collector3Dead == 2)
+	{
+		showScore();
+		reset();
+	}
+}
+function platformCollector1()
+{
+	collector1Range.animations.play('stop');
+	collector1Platform = 1;
+}
+
+function platformCollector2()
+{
+	collector2Range.animations.play('stop');
+	collector2Platform = 1;
+}
+
+function platformCollector3()
+{
+	collector3Range.animations.play('stop');
+	collector3Platform = 1;
+}
+
+function spawn()
+{
+		timecheck = game.time.now;
+		isSpawning = 0;
+		
+		
+		//level-specific spawning)
+		if (levelselect == 1){
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 100);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(0 + rand, 0 + rand, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(25 + rand, 25 + rand, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(75 - rand, 75 - rand, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(120,120);
+			}
+		}
+		
+		if (levelselect == 2){
+			if (waveVariation == 1){
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 100);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(0 + rand, 0 + rand, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(25 + rand, 25 + rand, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(75 - rand, 75 - rand, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(120, 120);
+			}
+			waveVariation = 2;
+			}
+			else if (waveVariation == 2){
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 100);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(800 - rand, 576 - rand, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(775 - rand, 551 - rand, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(725 + rand, 501 + rand, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(-120, -120);
+			}
+			waveVariation = 1;
+			}
+		}
+		
+		if (levelselect == 3){
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 8);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(rand * 9, 40 + rand, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(rand * 9, 40 + rand, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(rand * 9, 40 + rand, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(162, 18);
+			}
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 8);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(1024 - rand * 9, 480 - rand, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(1024 - rand * 9, 480 - rand, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(1024 - rand * 9, 480 - rand, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(-162, -18);
+			}
+			
+		}
+		
+		if (levelselect == 4){
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 20);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(40 + rand, rand * 3, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(40 + rand, rand * 3, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(40 + rand, rand * 3, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(60, 180);
+			}
+			for(var i = 0; i < particlesInWave; i++){
+				var particleSelect = Math.ceil(Math.random() * 3);
+				var rand = Math.ceil(Math.random() * 20);
+				
+				if (particleSelect == 1){
+					var particle = particleGroup.create(984 - rand, rand * 3, 'particle1');
+				}
+				else if (particleSelect == 2){
+					var particle = particleGroup.create(984 - rand, rand * 3, 'particle2');
+				}
+				else if (particleSelect == 3){
+					var particle = particleGroup.create(984 - rand, rand * 3, 'particle3');
+				}
+				
+				particle.body.bounce.set(1);
+				particle.body.velocity.setTo(-60, 180);
+			}
+		}
+		
+		if (levelselect == 5){
+			if (waveVariation == 1){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 20);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(200, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(200, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(200, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(0, 150);
+				}
+				waveVariation = 2;
+			}
+			else if (waveVariation == 2){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 20);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(400, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(400, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(400, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(0, 150);
+				}
+				waveVariation = 3;
+			}
+			else if (waveVariation == 3){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 20);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(600, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(600, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(600, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(0, 150);
+				}
+				waveVariation = 4;
+			}
+			else if (waveVariation == 4){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 20);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(800, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(800, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(800, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(0, 150);
+				}
+				waveVariation = 1;
+			}
+		}
+		
+		if (levelselect == 6){
+			if (waveVariation == 1){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 8);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(532 + rand * 5, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(532 + rand * 5, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(532 + rand * 5, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(160, 32);
+				}
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 8);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(480 - rand * 5, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(480 - rand * 5, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(480 - rand * 5, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(-160, 32);
+				}
+				waveVariation = 2;
+			}
+			else if (waveVariation == 2){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 20);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(624 + rand, 576 - rand * 1.2, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(624 + rand, 576 - rand * 1.2, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(624 + rand, 576 - rand * 1.2, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(100, -120);
+				}
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 20);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(400 - rand, 576 - rand * 1.2, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(400 - rand, 576 - rand * 1.2, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(400 - rand, 576 - rand * 1.2, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(-100, -120);
+				}
+				waveVariation = 1;
+			}
+		}
+		
+		if (levelselect == 7){
+			if (waveVariation == 1){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(rand, 288 - rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(rand, 288 - rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(rand, 288 - rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(120, -120);
+				}
+				waveVariation = 2;
+			}
+			else if (waveVariation == 2){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(300 - rand, 576 - rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(300 - rand, 576 - rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(300 - rand, 576 - rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(-120, -120);
+				}
+				waveVariation = 3;
+			}
+			else if (waveVariation == 3){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(1024 - rand, 288 + rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(1024 - rand, 288 + rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(1024 - rand, 288 + rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(-120, 120);
+				}
+				waveVariation = 4;
+			}
+			else if (waveVariation == 4){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(724 + rand, rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(724 + rand, rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(724 + rand, rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(120, 120);
+				}
+				waveVariation = 1;
+			}
+		}
+		
+		if (levelselect == 8){
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(rand, 480 - rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(rand, 480 - rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(rand, 480 - rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(120, -120);
+				}
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(1024 - rand, 480 - rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(1024 - rand, 480 - rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(1024 - rand, 480 - rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(-120, -120);
+				}
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(1024 - rand, 100 + rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(1024 - rand, 100 + rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(1024 - rand, 100 + rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(-120, 120);
+				}
+				for(var i = 0; i < particlesInWave; i++){
+					var particleSelect = Math.ceil(Math.random() * 3);
+					var rand = Math.ceil(Math.random() * 60);
+					
+					if (particleSelect == 1){
+						var particle = particleGroup.create(rand, 100 + rand, 'particle4');
+					}
+					else if (particleSelect == 2){
+						var particle = particleGroup.create(rand, 100 + rand, 'particle2');
+					}
+					else if (particleSelect == 3){
+						var particle = particleGroup.create(rand, 100 + rand, 'particle3');
+					}
+					
+					particle.body.bounce.set(1);
+					particle.body.velocity.setTo(120, 120);
+				}
+		}
+	
+		waveCount--;
+}
+function map1Listener(){
+	mapCounter = 1;
+	unlockablesListener();
+	return mapCounter;
+}
+function map2Listener(){
+	mapCounter = 2;
+	unlockablesListener();
+}
+function map3Listener(){
+	mapCounter = 3;
+	unlockablesListener();
+}
+function map4Listener(){
+	mapCounter = 4;
+	unlockablesListener();
+}
+function map5Listener(){
+	mapCounter = 5;
+	unlockablesListener();
+}
+function map6Listener(){
+	mapCounter = 6;
+	unlockablesListener();
+}
+function map7Listener(){
+	mapCounter = 7;
+	unlockablesListener();
+}
+function map8Listener(){
+	mapCounter = 8;
+	unlockablesListener();
+}
+
+function unlockablesListener() {
+	
+	fade = game.add.sprite(0,0, 'fade');
+	fade.inputEnabled = true;
+	console.log(mapCounter);
+	if(mapCounter ==1){
+		if(mapUnlock1 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==2){
+		if(mapUnlock2 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==3){
+		if(mapUnlock3 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==4){
+		if(mapUnlock4 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==5){
+		if(mapUnlock5 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==6){
+		if(mapUnlock6 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==7){
+		if(mapUnlock7 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	if(mapCounter ==8){
+		if(mapUnlock8 == true)
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'unlock'+mapCounter);	
+		}
+		else
+		{
+			enlarged = game.add.sprite(game.world.centerX - 360,90, 'locked2');
+		}
+	}
+	
+	
+	enlarged.inputEnabled = true;
+	enlarged.events.onInputDown.add(unlockablesListener2, this);
+}
+
+function unlockablesListener2() {
+
+	enlarged.destroy();
+	fade.destroy();
+
+}
+
+</script>
+
+</body>
+</html>
+
